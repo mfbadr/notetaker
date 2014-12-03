@@ -11,6 +11,22 @@ function User(obj){
   this.username = obj.username;
 }
 
+User.login = function(obj, cb){
+  pg.query('select * from users where username = $1 limit 1', [obj.username], function(err, results){
+    if(results.rows[0]){
+      var user = results.rows[0],
+          isGood = bcrypt.compareSync(obj.password, user.password);
+      if(!isGood){
+        return cb();
+      }
+      console.log('ISGOOD = ', isGood);
+      cb(user);
+    }else{
+      cb();
+    }
+  });
+};
+
 User.register = function(obj, cb){
   var user = new User(obj);
   avatarURL(obj.avatar, function(url, file){
