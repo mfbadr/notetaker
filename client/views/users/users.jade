@@ -13,11 +13,6 @@ h1 {{mode | uppercase}}
                   label(for='password') Password
                   input#password(type='password', name='password', ng-model='user.password')
                .small-6.columns
-            .row(ng-show='mode === "register"')
-                .small-6.columns
-                    label(for='avatar') Avatar
-                    input#avatar(type='text', name='avatar', ng-model='user.avatar')
-                .small-6.columns
             .row
                .small-6.columns
                   button(ng-click='submit()') Submit

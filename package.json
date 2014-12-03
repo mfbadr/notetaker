@@ -1,19 +1,19 @@
 {
-  "name": "hapi-technologies",
+  "name": "notetaker",
   "version": "1.0.0",
-  "description": "Hapi Technologies",
+  "description": "a note taking app with postgreSQL",
   "engines": {
     "node": "0.10.x"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nss-cohort-2014-06-07/hapi-technologies"
+    "url": "https://github.com/mfbadr/notetaker"
   },
   "scripts": {
     "start": "node server/index.js",
     "postinstall": "grunt deploy"
   },
-  "author": "Chyld Medford <chyld.medford@gmail.com>",
+  "author": "Mikey Badr <mfbadr@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.0.28",
@@ -37,8 +37,7 @@
     "joi": "^4.9.0",
     "jshint-stylish": "^1.0.0",
     "lout": "^5.1.2",
-    "mongoose": "^3.8.19",
-    "request": "^2.48.0",
-    "socket.io": "^1.2.1"
+    "pg": "^4.0.0",
+    "request": "^2.48.0"
   }
 }
