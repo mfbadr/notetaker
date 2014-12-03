@@ -1,8 +1,8 @@
 (function(){
   'use strict';
 
-  angular.module('hapi-auth', ['ui.router', 'LocalForageModule'])
-    .config(['$stateProvider', '$urlRouterProvider', '$localForageProvider', function($stateProvider, $urlRouterProvider, $localForageProvider){
+  angular.module('hapi-auth', ['ui.router'])
+    .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
       $urlRouterProvider.otherwise('/');
 
       $stateProvider
@@ -10,7 +10,7 @@
         .state('register',     {url:'/register',              templateUrl:'/views/users/users.html',        controller:'UsersCtrl'})
         .state('login',        {url:'/login',                 templateUrl:'/views/users/users.html',        controller:'UsersCtrl'});
 
-      $localForageProvider.config({name:'hapi-auth', storeName:'cache', version:1.0});
-    }]);
+    }])
+    .run(['$rootScope', '$http', function($rootScope, $http){}]);
 
 })();

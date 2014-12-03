@@ -1,28 +1,53 @@
 'use strict';
 
-/*
 var bcrypt     = require('bcrypt'),
     request    = require('request'),
     path       = require('path'),
-    AWS        = require('aws-sdk'),
- */
-var User       = null;
+    pg         = require('../postgres/manager'),
+    AWS        = require('aws-sdk');
 
 
-//User.encrypt = function(){
-  //this.password = bcrypt.hashSync(this.password, 10);
-//};
+function User(obj){
+  this.username = obj.username;
+}
 
-/* using aws.s3 and request to download and image
-  var s3   = new AWS.S3(),
-      url  = this.avatar,
-      ext  = path.extname(this.avatar),
-      file = this._id + '.avatar' + ext;
+User.register = function(obj, cb){
+  var user = new User(obj);
+  avatarURL(obj.avatar, function(url, file){
+    user.avatar = url;
+    user.password = bcrypt.hashSync(obj.password, 10);
+    console.log('The hashed password is', user.password);
+    pg.query('insert into users (username, password, avatar) values ($1, $2, $3) returning id', [user.username, user.password, user.avatar], function(err, results){
+      if(!err){
+        download(obj.avatar, file, cb);
+      }else{
+        cb(err);
+        console.log('err: ', err);
+      }
+    });
+  });
+};
 
-  this.avatar = 'https://s3.amazonaws.com/' + process.env.AWS_BUCKET + '/' + file;
-
+function download(url, file, cb){
+  var s3   = new AWS.S3();
+  request({url: url, encoding: null}, function(err, response, body){
     var params = {Bucket: process.env.AWS_BUCKET, Key: file, Body: body, ACL: 'public-read'};
     s3.putObject(params, cb);
-*/
+  });
+}
+
+function avatarURL(url, cb){
+  var //s3   = new AWS.S3(),
+      ext  = path.extname(url);
+  require('crypto').randomBytes(48, function(ex, bg){
+    var token = bg.toString('hex'),
+    file = token + '.avatar' + ext,
+    avatar = 'https://s3.amazonaws.com/' + process.env.AWS_BUCKET + '/' + file;
+    console.log('AVATAR: ', avatar);
+    console.log('file: ', file);
+    cb(avatar, file);
+  });
+}
 
 module.exports = User;
+
